@@ -28,7 +28,7 @@ const registerUser = asyncHandler(async(req, res)=>{
 
     try {
         const {name, email, password} = req.body;
-        const existedUser = await User.findOne({ email })
+        const existedUser = await User.findOne({ name })
 
         if (existedUser) {
             console.log(existedUser);
@@ -52,12 +52,10 @@ const registerUser = asyncHandler(async(req, res)=>{
 const loginUser = asyncHandler( async (req, res) => {
     try {
         const { name, password } = req.body;
-        //const normalizedEmail = email.toLowerCase(); 
         const user = await User.findOne({name});
         
         if (!user) {
             throw new ApiError(404,'User Does Not Exist!')
-            // return res.status(404).json('User Does Not Exist!');
         }
 
         const isMatch = await user.isPasswordCorrect(password);
